@@ -82,31 +82,47 @@ body {
 .theme-minecraft { background-image: url('../images/minecraft.png'); }
 .theme-starry { background: linear-gradient(#0f172a, #1e1b4b); }
 
-/* THEME CLASSES - INDIVIDUALIZED SCALING */
-.theme-avocado { background-image: url('../images/avocado.png'); background-size: 400px; background-repeat: repeat; }
-.theme-lofi { background-image: url('../images/lofi.png'); background-size: cover; background-position: center; }
-.theme-minecraft { background-image: url('../images/minecraft.png'); background-size: 300px; background-repeat: repeat; }
-.theme-starry { background: linear-gradient(#0f172a, #1e1b4b); }
+/* THEME CLASSES - INDIVIDUALIZED SCALING & BUBBLES */
+.theme-avocado { 
+    background-image: url('../images/avocado.png'); background-size: 400px; background-repeat: repeat; 
+    --bubble-sent: #22c55e; --bubble-sent-text: #fff;
+}
+.theme-lofi { 
+    background-image: url('../images/lofi.png'); background-size: cover; background-position: center; 
+    --bubble-sent: #8b5cf6; --bubble-sent-text: #fff;
+}
+.theme-minecraft { 
+    background-image: url('../images/minecraft.png'); background-size: 300px; background-repeat: repeat; 
+    --bubble-sent: #4ade80; --bubble-sent-text: #064e3b;
+}
+.theme-starry { 
+    background: linear-gradient(#0f172a, #1e1b4b); 
+    --bubble-sent: #facc15; --bubble-sent-text: #000;
+}
 
 /* CRAZY NEW THEMES - INDIVIDUAL SIZES */
 .theme-cyberpunk {
     background-image: url('https://images.unsplash.com/photo-1605142859862-978be7eba909?q=80&w=1000&auto=format&fit=crop');
     background-size: cover; background-position: center;
+    --bubble-sent: #ff00ff; --bubble-sent-text: #fff;
 }
 
 .theme-nebula {
     background-image: url('https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=1000&auto=format&fit=crop');
     background-size: cover; background-position: center;
+    --bubble-sent: #4f46e5; --bubble-sent-text: #fff;
 }
 
 .theme-gold {
     background-image: url('https://images.unsplash.com/photo-1515462277126-2dd0c162007a?q=80&w=1000&auto=format&fit=crop');
     background-size: cover; background-position: center;
+    --bubble-sent: #f59e0b; --bubble-sent-text: #000;
 }
 
 .theme-marvel {
     background-image: url('https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=1000&auto=format&fit=crop');
     background-size: cover; background-position: center;
+    --bubble-sent: #b91c1c; --bubble-sent-text: #fff;
 }
 
 @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }

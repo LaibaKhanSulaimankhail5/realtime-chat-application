@@ -9,7 +9,8 @@ const STATE = {
     stompClient: null,
     activeRoomId: null,
     subscriptions: {},
-    isDarkMode: true
+    isDarkMode: true,
+    roomThemes: JSON.parse(localStorage.getItem('aura_room_themes') || '{}')
 };
 
 const UI = {
@@ -43,9 +44,15 @@ const THEMES = {
 };
 
 function applyTheme(name) {
+    if (!STATE.activeRoomId) return;
+    
     const area = UI.get('message-area');
     area.className = 'chat-body theme-' + name;
     
+    // Save per-room
+    STATE.roomThemes[STATE.activeRoomId] = name;
+    localStorage.setItem('aura_room_themes', JSON.stringify(STATE.roomThemes));
+
     document.querySelectorAll('.theme-dot').forEach(dot => {
         dot.classList.toggle('active', dot.dataset.theme === name);
     });
@@ -139,6 +146,11 @@ function selectRoom(room) {
     UI.get('input-area').classList.remove('hidden');
     fetchRooms();
     loadHistory(room.id);
+    
+    // Load per-room theme
+    const savedTheme = STATE.roomThemes[room.id] || 'default';
+    applyTheme(savedTheme);
+
     STATE.subscriptions[room.id] = STATE.stompClient.subscribe('/topic/room/' + room.id, (p) => {
         const msg = JSON.parse(p.body);
         const existing = document.querySelector(`[data-msg-id="${msg.id}"]`);

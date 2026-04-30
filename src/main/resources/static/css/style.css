@@ -82,29 +82,31 @@ body {
 .theme-minecraft { background-image: url('../images/minecraft.png'); }
 .theme-starry { background: linear-gradient(#0f172a, #1e1b4b); }
 
-/* CRAZY NEW THEMES - HD EDITIONS */
+/* THEME CLASSES - AESTHETIC TILING */
+.theme-avocado { background-image: url('../images/avocado.png'); background-size: 150px; background-repeat: repeat; }
+.theme-lofi { background-image: url('../images/lofi.png'); background-size: 200px; background-repeat: repeat; }
+.theme-minecraft { background-image: url('../images/minecraft.png'); background-size: 120px; background-repeat: repeat; }
+.theme-starry { background: linear-gradient(#0f172a, #1e1b4b); }
+
+/* CRAZY NEW THEMES - HD TILING */
 .theme-cyberpunk {
     background-image: url('https://images.unsplash.com/photo-1605142859862-978be7eba909?q=80&w=1000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
+    background-size: 300px; background-repeat: repeat;
 }
 
 .theme-nebula {
     background-image: url('https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=1000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
+    background-size: 400px; background-repeat: repeat;
 }
 
 .theme-gold {
     background-image: url('https://images.unsplash.com/photo-1515462277126-2dd0c162007a?q=80&w=1000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
+    background-size: 250px; background-repeat: repeat;
 }
 
 .theme-marvel {
     background-image: url('https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=1000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
+    background-size: 200px; background-repeat: repeat;
 }
 
 @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }

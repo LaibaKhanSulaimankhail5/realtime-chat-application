@@ -13,4 +13,6 @@ public class MessageResponse {
     private Long roomId;
     private String roomName;
     private LocalDateTime timestamp;
+    private boolean edited;
+    private boolean deleted;
 }

@@ -89,6 +89,42 @@ public class ChatService {
                 .map(this::mapMessageToResponse);
     }
 
+    @Transactional
+    public MessageResponse editMessage(Long messageId, String newContent, String userEmail) {
+        ChatMessage message = chatMessageRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("Message not found"));
+
+        if (!message.getSender().getEmail().equals(userEmail)) {
+            throw new RuntimeException("Unauthorized to edit this message");
+        }
+
+        message.setContent(newContent);
+        message.setEdited(true);
+        ChatMessage saved = chatMessageRepository.save(message);
+        
+        MessageResponse response = mapMessageToResponse(saved);
+        messagingTemplate.convertAndSend("/topic/room/" + message.getRoom().getId(), response);
+        return response;
+    }
+
+    @Transactional
+    public MessageResponse deleteMessage(Long messageId, String userEmail) {
+        ChatMessage message = chatMessageRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("Message not found"));
+
+        if (!message.getSender().getEmail().equals(userEmail)) {
+            throw new RuntimeException("Unauthorized to delete this message");
+        }
+
+        message.setDeleted(true);
+        message.setContent("This message was deleted");
+        ChatMessage saved = chatMessageRepository.save(message);
+
+        MessageResponse response = mapMessageToResponse(saved);
+        messagingTemplate.convertAndSend("/topic/room/" + message.getRoom().getId(), response);
+        return response;
+    }
+
     // ─── Helpers ─────────────────────────────────────────────────────────────
 
     private ChatRoomResponse mapRoomToResponse(ChatRoom room) {
@@ -109,6 +145,8 @@ public class ChatService {
                 .roomId(msg.getRoom().getId())
                 .roomName(msg.getRoom().getName())
                 .timestamp(msg.getTimestamp())
+                .edited(msg.isEdited())
+                .deleted(msg.isDeleted())
                 .build();
     }
 }

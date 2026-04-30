@@ -25,4 +25,7 @@ public class ChatMessage {
     private ChatRoom room;
 
     private LocalDateTime timestamp = LocalDateTime.now();
+
+    private boolean isEdited = false;
+    private boolean isDeleted = false;
 }

@@ -51,4 +51,19 @@ public class ChatRestController {
             @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(chatService.getRoomHistory(id, page, size));
     }
+
+    @PutMapping("/messages/{id}")
+    public ResponseEntity<MessageResponse> editMessage(
+            @PathVariable Long id,
+            @RequestBody String newContent,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(chatService.editMessage(id, newContent, userDetails.getUsername()));
+    }
+
+    @DeleteMapping("/messages/{id}")
+    public ResponseEntity<MessageResponse> deleteMessage(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(chatService.deleteMessage(id, userDetails.getUsername()));
+    }
 }

@@ -53,17 +53,8 @@ body {
     background: radial-gradient(circle at top right, #111, #000);
 }
 
-.blob {
-    position: absolute; width: 60vw; height: 60vw; border-radius: 50%;
-    filter: blur(120px); opacity: 0.4; animation: float 25s infinite alternate;
-}
-
-.blob-1 { background: linear-gradient(135deg, #4f46e5, #818cf8); top: -20%; right: -10%; }
-.blob-2 { background: linear-gradient(135deg, #db2777, #f472b6); bottom: -10%; left: -10%; animation-delay: -7s; }
-
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(50px, 80px) scale(1.1); }
+.light-mode-active .bg-canvas {
+    background: radial-gradient(circle at top right, #f5f5f7, #e5e5e7);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }

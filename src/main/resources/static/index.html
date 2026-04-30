@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura | Elite Messaging</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <div class="bg-canvas">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- AUTH VIEW -->
+    <div id="auth-container" class="auth-view">
+        <div class="glass auth-card">
+            <h1>Aura<b>.</b></h1>
+            <div id="username-group" class="hidden">
+                <input type="text" id="username" class="input-field" placeholder="Full Name" autocomplete="off">
+            </div>
+            <input type="email" id="email" class="input-field" placeholder="Email Address" autocomplete="off" spellcheck="false">
+            <input type="password" id="password" class="input-field" placeholder="Password">
+            
+            <button id="auth-submit" class="primary-btn">Sign In</button>
+            
+            <p style="margin-top:20px; font-size:0.9rem; cursor:pointer;" id="toggle-auth">Don't have an account? Register</p>
+        </div>
+    </div>
+
+    <!-- APP VIEW -->
+    <div id="chat-container" class="app-container hidden">
+        <aside class="glass sidebar">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2 style="font-weight:200;">Aura<b>Chat</b></h2>
+                <button id="mode-toggle" style="background:none; border:none; color:var(--text-primary); cursor:pointer; font-size:1.2rem;">
+                    <i id="mode-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+
+            <div id="room-list" style="flex:1; overflow-y:auto;">
+                <!-- Rooms -->
+            </div>
+
+            <div style="margin-top:auto; display:flex; gap:15px;">
+                <button id="btn-create-room" class="primary-btn" style="padding:10px;"><i class="fas fa-plus"></i></button>
+                <button id="logout-btn" class="primary-btn" style="padding:10px; background:rgba(255,0,0,0.1); color:red;"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </aside>
+
+        <main class="glass chat-window">
+            <header style="padding:25px; border-bottom:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 id="active-room-name" style="font-weight:600;">Select a Chat</h3>
+                    <p id="display-username" style="font-size:0.8rem; opacity:0.6;">Username</p>
+                </div>
+                <button id="btn-theme" style="background:none; border:none; color:var(--text-primary); cursor:pointer; font-size:1.2rem;">
+                    <i class="fas fa-palette"></i>
+                </button>
+            </header>
+
+            <div id="message-area" class="chat-body">
+                <!-- Messages -->
+            </div>
+
+            <footer id="input-area" class="hidden" style="padding:20px;">
+                <form id="message-form" style="display:flex; gap:10px; background:var(--glass-bg); padding:10px; border-radius:20px; border:1px solid var(--glass-border);">
+                    <input type="text" id="message-input" placeholder="Message..." autocomplete="off" style="flex:1; background:none; border:none; color:var(--text-primary); outline:none; padding:10px;">
+                    <button type="submit" style="background:var(--text-primary); color:var(--bg-dark); border:none; width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                </form>
+            </footer>
+        </main>
+    </div>
+
+    <!-- THEME MODAL -->
+    <div id="theme-modal" class="hidden">
+        <div class="overlay" id="theme-overlay"></div>
+        <div class="glass modal">
+            <h3 style="margin-bottom:20px;">Chat Theme</h3>
+            <div class="theme-options">
+                <div class="theme-dot" data-theme="default" style="background:#000; border:1px solid #333;" title="Default"></div>
+                <div class="theme-dot" data-theme="avocado" style="background-image: url('images/avocado.png'); background-size: cover;" title="Avocado"></div>
+                <div class="theme-dot" data-theme="lofi" style="background-image: url('images/lofi.png'); background-size: cover;" title="Lo-Fi"></div>
+                <div class="theme-dot" data-theme="minecraft" style="background-image: url('images/minecraft.png'); background-size: cover;" title="Minecraft"></div>
+                <div class="theme-dot" data-theme="starry" style="background: linear-gradient(#0f172a, #1e1b4b); border:1px solid #fff;" title="Starry"></div>
+            </div>
+            <button id="close-theme" class="primary-btn" style="margin-top:25px;">Done</button>
+        </div>
+    </div>
+
+    <!-- CREATE ROOM MODAL -->
+    <div id="room-modal" class="hidden">
+        <div class="overlay" id="room-overlay"></div>
+        <div class="glass modal">
+            <h3>New Channel</h3>
+            <input type="text" id="new-room-name" class="input-field" style="margin-top:20px;" placeholder="Name">
+            <button id="btn-confirm-room" class="primary-btn">Create</button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

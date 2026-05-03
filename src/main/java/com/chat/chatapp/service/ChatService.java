@@ -47,9 +47,23 @@ public class ChatService {
     }
 
     public List<ChatRoomResponse> getAllRooms() {
-        return chatRoomRepository.findAll().stream()
+        List<ChatRoom> rooms = chatRoomRepository.findAll();
+        if (rooms.isEmpty()) {
+            // Create some default rooms if none exist
+            createDefaultRoom("Public", "General discussion for everyone");
+            createDefaultRoom("Friends", "A place for close friends to chat");
+            rooms = chatRoomRepository.findAll();
+        }
+        return rooms.stream()
                 .map(this::mapRoomToResponse)
                 .collect(Collectors.toList());
+    }
+
+    private void createDefaultRoom(String name, String desc) {
+        ChatRoom room = new ChatRoom();
+        room.setName(name);
+        room.setDescription(desc);
+        chatRoomRepository.save(room);
     }
 
     public ChatRoomResponse getRoomById(Long id) {

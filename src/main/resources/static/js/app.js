@@ -82,11 +82,21 @@ async function handleAuth(e) {
         });
         const data = await res.json();
         if (res.ok) {
-            STATE.token = data.token;
-            STATE.username = data.username;
-            localStorage.setItem('aura_token', data.token);
-            localStorage.setItem('aura_username', data.username);
-            UI.toggleView(true);
+            if (isRegister) {
+                UI.notify('Success', 'Registration successful! Please login.', 'success');
+                // Switch UI back to login mode
+                UI.get('username-group').classList.add('hidden');
+                UI.get('toggle-auth').innerText = "Don't have an account? Register";
+                UI.get('auth-submit').innerText = 'Sign In';
+                btn.innerText = 'Sign In';
+                btn.disabled = false;
+            } else {
+                STATE.token = data.token;
+                STATE.username = data.username;
+                localStorage.setItem('aura_token', data.token);
+                localStorage.setItem('aura_username', data.username);
+                UI.toggleView(true);
+            }
         } else {
             btn.innerText = originalText;
             btn.disabled = false;
@@ -163,7 +173,7 @@ function selectRoom(room) {
 }
 
 async function loadHistory(id) {
-    const res = await fetch(`/api/chat/rooms/${id}/messages`, {
+    const res = await fetch(`/api/chat/rooms/${id}/history`, {
         headers: { 'Authorization': 'Bearer ' + STATE.token }
     });
     const data = await res.json();
@@ -304,31 +314,68 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    UI.get('mode-toggle').onclick = () => {
-        STATE.isDarkMode = !STATE.isDarkMode;
-        document.body.classList.toggle('light-mode-active', !STATE.isDarkMode);
-        UI.get('mode-icon').className = STATE.isDarkMode ? 'fas fa-moon' : 'fas fa-sun';
-    };
+    const modeToggle = UI.get('mode-toggle');
+    if (modeToggle) {
+        modeToggle.onclick = () => {
+            STATE.isDarkMode = !STATE.isDarkMode;
+            document.body.classList.toggle('light-mode-active', !STATE.isDarkMode);
+            const icon = UI.get('mode-icon');
+            if (icon) icon.className = STATE.isDarkMode ? 'fas fa-moon' : 'fas fa-sun';
+        };
+    }
 
     // Theme Picker
-    UI.get('btn-theme').onclick = () => UI.get('theme-modal').classList.remove('hidden');
-    UI.get('theme-overlay').onclick = () => UI.get('theme-modal').classList.add('hidden');
-    UI.get('close-theme').onclick = () => UI.get('theme-modal').classList.add('hidden');
+    const btnTheme = UI.get('btn-theme');
+    if (btnTheme) {
+        btnTheme.onclick = () => UI.get('theme-modal').classList.remove('hidden');
+    }
+
+    const themeOverlay = UI.get('theme-overlay');
+    if (themeOverlay) {
+        themeOverlay.onclick = () => UI.get('theme-modal').classList.add('hidden');
+    }
+
+    const closeTheme = UI.get('close-theme');
+    if (closeTheme) {
+        closeTheme.onclick = () => UI.get('theme-modal').classList.add('hidden');
+    }
+
     document.querySelectorAll('.theme-dot').forEach(dot => {
         dot.onclick = () => applyTheme(dot.dataset.theme);
     });
 
-    UI.get('btn-create-room').onclick = () => UI.get('room-modal').classList.remove('hidden');
-    UI.get('room-overlay').onclick = () => UI.get('room-modal').classList.add('hidden');
-    UI.get('btn-confirm-room').onclick = async () => {
-        const name = UI.get('new-room-name').value;
-        const res = await fetch('/api/chat/rooms', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + STATE.token },
-            body: JSON.stringify({ name })
-        });
-        if (res.ok) { UI.get('room-modal').classList.add('hidden'); fetchRooms(); }
-    };
+    const btnCreateRoom = UI.get('btn-create-room');
+    if (btnCreateRoom) {
+        btnCreateRoom.onclick = () => UI.get('room-modal').classList.remove('hidden');
+    }
 
-    UI.get('logout-btn').onclick = () => { localStorage.clear(); location.reload(); };
+    const roomOverlay = UI.get('room-overlay');
+    if (roomOverlay) {
+        roomOverlay.onclick = () => UI.get('room-modal').classList.add('hidden');
+    }
+
+    const btnConfirmRoom = UI.get('btn-confirm-room');
+    if (btnConfirmRoom) {
+        btnConfirmRoom.onclick = async () => {
+            const nameInput = UI.get('new-room-name');
+            const name = nameInput.value;
+            if (!name) return;
+            
+            const res = await fetch('/api/chat/rooms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + STATE.token },
+                body: JSON.stringify({ name })
+            });
+            if (res.ok) { 
+                UI.get('room-modal').classList.add('hidden'); 
+                nameInput.value = '';
+                fetchRooms(); 
+            }
+        };
+    }
+
+    const logoutBtn = UI.get('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => { localStorage.clear(); location.reload(); };
+    }
 });

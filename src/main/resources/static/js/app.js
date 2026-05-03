@@ -324,10 +324,37 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Theme Picker
+    // Theme Picker Popup Logic
     const btnTheme = UI.get('btn-theme');
-    if (btnTheme) {
-        btnTheme.onclick = () => UI.get('theme-modal').classList.remove('hidden');
+    const themeModal = UI.get('theme-modal');
+    if (btnTheme && themeModal) {
+        btnTheme.onclick = (e) => {
+            e.stopPropagation();
+            themeModal.classList.toggle('hidden');
+        };
+
+        // Close on dots click
+        const dots = themeModal.querySelectorAll('.theme-dot');
+        dots.forEach(dot => {
+            dot.onclick = () => {
+                const themeName = dot.getAttribute('data-theme');
+                applyTheme(themeName);
+                themeModal.classList.add('hidden');
+            };
+        });
+
+        // Close on button click
+        const closeBtn = UI.get('close-theme');
+        if (closeBtn) {
+            closeBtn.onclick = () => themeModal.classList.add('hidden');
+        }
+
+        // Close if click outside
+        document.addEventListener('click', (e) => {
+            if (!themeModal.contains(e.target) && e.target !== btnTheme) {
+                themeModal.classList.add('hidden');
+            }
+        });
     }
 
     const themeOverlay = UI.get('theme-overlay');
